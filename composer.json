@@ -2,6 +2,7 @@
     "name": "migwa/bukie",
     "description": "proj",
     "type": "project",
+    "version": "0.0.1",
     "autoload": {
         "psr-4": {
             "Migwa\\Bukie\\": "src/"

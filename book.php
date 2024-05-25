@@ -6,12 +6,16 @@
     <title>Bukie | Auth</title>
 </head>
 <?php
+
 $db = new DB();
+$pagesAction = new Pages();
+$booksAction = new Books();
+
 $bookInfo;
 parse_str($_SERVER["QUERY_STRING"], $bookInfo);
 
-$book = $db->getBook($bookInfo["id"]);
-$pages = $db->getPages($bookInfo["id"]);
+$book = $booksAction->getBook($bookInfo["id"]);
+$pages = $pagesAction->getPages($bookInfo["id"]);
 
 function changePage($bookInfo, $direction)
 {
@@ -32,7 +36,7 @@ function changePage($bookInfo, $direction)
         $progress = ($bookInfo["page"] / $book["pages_amount"]) * 100;
         if ($progress > 100) $progress = 100;
 
-        $db->setPage(
+        $pagesAction->setPage(
             $_SESSION["user"]["id"],
             $book["id"],
             $bookInfo["page"],
@@ -64,12 +68,12 @@ function changePage($bookInfo, $direction)
             }
             ?>
         </section>
-        <section class="nav position-absolute bottom-0 start-0 p-4">
+        <section class="nav position-fixed bottom-0 start-0 p-4">
             <a class="btn btn-secondary" href="<?php changePage($bookInfo, "prev") ?>">Previous</a>
             &nbsp;
             <a class="btn btn-primary" href="<?php changePage($bookInfo, "next") ?>">Next</a>
         </section>
-        <section class=" pagesAmount position-absolute bottom-0 end-0 p-4">
+        <section class=" pagesAmount position-fixed bottom-0 end-0 p-4">
             <?php echo $bookInfo["page"] . "/" . $book["pages_amount"] ?>
         </section>
     </article>

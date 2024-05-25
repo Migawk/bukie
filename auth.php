@@ -11,6 +11,7 @@
 $msgsReg = array();
 $msgsLog = array();
 $db = new DB();
+$usersAction = new Users();
 
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
@@ -20,7 +21,7 @@ if (isset($_POST["email"])) { // Register
     if ($_POST["password1"] != $_POST["password2"]) {
         return $msgsReg[] = array("content" => "The incorrect password!", "status" => "bad");
     } else {
-        $res = $db->createUser($_POST["name"], $_POST["email"], $_POST["password1"]);
+        $res = $usersAction->createUser($_POST["name"], $_POST["email"], $_POST["password1"]);
         if ($res) {
             $msgsReg[] = array("content" => "Account is created successfully!", "status" => "good");
         } else {
@@ -29,7 +30,7 @@ if (isset($_POST["email"])) { // Register
     }
 } elseif (!isset($_POST["email"]) && isset($_POST["name"])) { // Login
     try {
-        $res = $db->logIn($_POST["name"], $_POST["password"]);
+        $res = $usersAction->logIn($_POST["name"], $_POST["password"]);
         $_SESSION["user"] = $res;
         $actions = new Actions();
         

@@ -7,11 +7,15 @@
 </head>
 
 <?php
+include "./layouts/rack.php";
 $db = new DB();
-$popularBooks = $db->getAllBooks();
+$booksAction = new Books();
+$libsAction = new Libs();
+$popularBooks = $booksAction->getAllBooks();
+$lib = $libsAction->getLib($_SESSION["user"]["id"]);
 
 if (isset($_GET["q"])) {
-    $books = $db->searchBook($_GET["q"]);
+    $books = $booksAction->searchBook($_GET["q"]);
 }
 
 function fill($field)
@@ -24,10 +28,10 @@ function fill($field)
 
 <body>
     <?php include "./layouts/header.php"; ?>
-    <article>
+    <article class="px-4">
         <section>
-            <form class="d-flex w-75 gap-2" action="<?php $_SERVER["PHP_SELF"] ?>" method="get">
-                <input class="form-control" type="text" name="q" placeholder="Query..." value="<?php fill("q") ?>">
+            <form class="d-flex w-50 input-group" action="<?php $_SERVER["PHP_SELF"] ?>" method="get">
+                <input class="form-control form-outline" type="text" name="q" placeholder="Query..." value="<?php fill("q") ?>">
                 <input class="btn btn-primary" type="submit" value="Submit">
             </form>
         </section>
@@ -38,13 +42,13 @@ function fill($field)
                 echo "<h1>Result:</h1> <p>Waiting for request...</p>";
             } else {
                 echo "<h1>Result:</h1>";
-                include "./layouts/rack.php";
+                rack($books, $libsAction,$lib);
             }
             ?>
         </section>
         <section>
             <h1>Popular:</h1>
-            <?php include "./layouts/popularRack.php" ?>
+            <?php rack($popularBooks, $libsAction, $lib); ?>
         </section>
     </article>
 </body>

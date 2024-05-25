@@ -2,12 +2,16 @@
 include __DIR__ . "/../helpers/dotenv.php";
 include __DIR__ . "/../helpers/actions.php";
 include __DIR__ . "/../helpers/db.php";
+include __DIR__ . "/../helpers/db/pages.php";
+include __DIR__ . "/../helpers/db/books.php";
+include __DIR__ . "/../helpers/db/users.php";
+include __DIR__ . "/../helpers/db/libs.php";
 session_start();
 
 $isUser = false;
 
 
-if(isset($_SESSION["user"])) {
+if (isset($_SESSION["user"])) {
     $isUser = true;
 }
 

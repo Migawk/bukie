@@ -14,7 +14,8 @@
     }
 
     $db = new DB();
-    $books = $db->getLib($_SESSION["user"]["id"]);
+    $libsActions = new Libs();
+    $books = $libsActions->getLib($_SESSION["user"]["id"]);
 
     function getPage($book)
     {
@@ -26,23 +27,25 @@
     }
 
     if (isset($_POST["delete"])) {
-        $db->deleteLib($_SESSION["user"]["id"], $_POST["id"]);
+        $libsActions->deleteLib($_SESSION["user"]["id"], $_POST["id"]);
     }
     ?>
-    <div class="list d-flex flex-column p-4 gap-4">
+    <div class="list row p-4 gap-4">
         <?php
-        if(sizeof($books) == 0 ) {
+        if (sizeof($books) == 0) {
             echo '<p>You have got an empty list.<br>You can find books at <a href="search.php">Find More</a>.</p>';
             return;
         }
-        foreach ($books as $book) {
+        foreach ($books as $bookNum => $book) {
         ?>
-            <div class="book border">
-                <div class="main d-flex flex-column p-4 gap-4">
-                    <div class="mainContent d-flex justify-content-between align-items-center">
+            <div class="book border rounded col-sm">
+                <div class="main d-flex flex-column justify-content-between p-4 gap-4 h-100">
+                    <div class="mainContent d-flex justify-content-between align-items-center h-100">
                         <div class="d-flex align-items-center gap-5">
                             <div class="left">
-                                <a href="book.php?id=<?php echo $book["bookId"] ?>&page=<?php echo getPage($book) ?>"><img src="<?php echo $book["bookImg"] ?>" alt="<?php echo $book["bookName"] ?>" width="128"></a>
+                                <a href="book.php?id=<?php echo $book["bookId"] ?>&page=<?php echo getPage($book) ?>">
+                                    <img src="<?php echo $book["bookImg"] ?>" class="rounded" alt="<?php echo $book["bookName"] ?>" width="128">
+                                </a>
                             </div>
                             <div class="right">
                                 <div class="name">
@@ -58,11 +61,11 @@
                         <form class="actions" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
                             <input type="hidden" name="id" value="<?php echo $book["bookId"] ?>">
                             <input type="hidden" name="delete">
-                            <button class="btn btn-danger">Delete</button>
+                            <button class="btn btn-danger btn-lg">Delete</button>
                         </form>
                     </div>
-                    <div class="progress" style="height: 8px">
-                        <div class="progress-bar" role="progressbar" style="width: <?php echo $book["progress"] ?>%" aria-valuenow="<?php echo $book["progress"] ?>" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress" style="height: 6px">
+                        <div class="progress-bar border-end border-light border-4" role="progressbar" style="width: <?php echo $book["progress"] ?>%;">
                         </div>
                     </div>
                 </div>
