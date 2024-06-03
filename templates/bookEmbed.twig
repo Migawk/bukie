@@ -1,0 +1,66 @@
+{# 
+PHP_SELF
+
+currentPage
+
+mode -> "reader" | "author"
+
+book
+    .id
+    .img
+    .name
+    .description
+    .progress
+    .userId
+    .userName
+#}
+{% set href = "book.php?id=" ~ book.id ~ "&page=" ~ currentPage %}
+{% if mode is not defined %}
+	{% set mode = "reader" %}
+{% endif %}
+
+<div class="col-6 d-flex gap-5 align-items-center h-100 w-50">
+	<div class="left">
+		<a href="{{href}}">
+			<img src="{{book.img}}" class="rounded object-fit-cover" alt="{{book.name}}" style="min-width: 128px; max-width: 128px; min-height: 200px; max-height: 200px;">
+		</a>
+	</div>
+	<div class="right d-flex flex-column gap-2 w-100">
+		<div class="name">
+			<a class="fs-1 color-standard text-decoration-none" href="{{href}}">
+				{{book.name}}
+			</a>
+		</div>
+		<div class="text-secondary fs-5">
+			{{book.userName}}
+		</div>
+		<div class="name text-secondary">
+			<i class="fs-4">''
+				{% if book.description|length < 64 %}
+					{{book.description}}
+				{% else %}
+					{{book.description|slice(0, 64)}}...
+				{% endif %}''</i>
+		</div>
+		{% if mode == "reader" %}
+			<div class="d-flex gap-1 w-100 align-items-center">
+				<p class="text-secondary">{{book.progress}}%</p>
+				<div class="progress w-100" style="height: 6px">
+					<div class="progress-bar border-end border-light border-4" role="progressbar" style="width: {{book.progress}}%;"></div>
+				</div>
+			</div>
+		{% endif %}
+		<form class="actions d-flex flex-wrap gap-2 justify-content-end" action="{{PHP_SELF}}" method="POST">
+			<input type="hidden" name="id" value="{{book.id}}">
+			{% if mode == "reader" %}
+				<input type="hidden" name="delete">
+				<button class="btn btn-success btn-lg float-end px-4 py-2">Info</button>
+				<button class="btn btn-danger btn-lg float-end px-4 py-2">Remove</button>
+			{% else %}
+				<a type="button" href="#" name="info" class="btn btn-success btn-lg">Info</a>
+				<a type="button" href="?bookId={{book.id}}" name="edit" class="btn btn-warning btn-lg">Edit</a>
+				<a type="button" href="#" name="isShow" class="btn btn-danger btn-lg">Hide/Show</a>
+			{% endif %}
+		</form>
+	</div>
+</div>

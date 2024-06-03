@@ -1,0 +1,111 @@
+@import "../../node_modules/bootstrap/scss/bootstrap"
+
+$enable-grid-classes: false
+$enable-cssgrid: true
+
+$standard: #161719
+$textSecondary: $secondary-text-emphasis
+$purple: #290661
+$transparent: #00000000
+
+.display-20
+	font-size: 1.25rem
+
+.bg-lighted
+	background-color: $gray-300
+.text-lighted
+	color: $gray-300
+
+.bg-standart
+	background-color: $standard
+	color: $gray-300
+.color-standard
+	color: $standard
+
+.bg-purple
+	background-color: $purple !important
+.color-purple
+	color: $purple !important
+
+.iShadow
+	box-shadow: 2px 2px 4px #00000044 !important
+.aShadow
+	box-shadow: 2px 2px 4px #DEE2E644 !important
+
+.text-secondary-standart
+	color: #A7ACB1
+
+.border-empty // header
+	border-bottom: 3px solid $standard !important
+
+.text-gray-900
+	color: $gray-900 !important
+.border-gray-900
+	border-color: $gray-900 !important
+
+.placeholder-gray-900::placeholder
+	color: $gray-900
+
+.w-min
+	width: min-content !important
+.w-fit
+	width: max-content !important
+
+.navBtn
+	transition: .5s
+	&>span
+		transition: 1s
+	&>svg>path
+		transition: 1s
+.navBtn:hover:not(*>.text-primary) // everything, except .text-primary
+	transition: .25s
+	border-bottom: 3px solid $cyan !important
+	&>span
+		color: $cyan
+		transition: .25s
+	&>svg>path
+		fill: $cyan
+		transition: .25s
+
+
+.counter
+	width: 20px
+	background: none
+	color: $blue
+	border: none
+	text-align: center
+	outline: none
+
+.pop ~ .popList:last-child
+	display: none !important
+.pop:focus ~ .popList:last-child
+	display: flex !important
+	position: absolute
+	transform: translate(0, 48px)
+
+.popList > button
+	border: none
+	border-bottom: 3px solid $gray-300
+	padding: 4px
+	background: $standard
+	color: $gray-300
+
+.popList > button:hover
+	background: $gray-300
+	color: $standard
+
+.popList > button:last-child
+	border: none
+
+.field
+	transition: .25s
+	opacity: 0
+	position: absolute
+	z-index: 10
+	display: none !important
+
+.searchField:hover ~ .field, .field:hover
+	transition: .25s
+	display: block !important
+	opacity: 1
+	transform: translate(0, -2px)

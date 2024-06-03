@@ -1,0 +1,7 @@
+<div class="overflow-auto">
+    <div class="d-flex gap-5 p-1">
+    {% for book in books %}
+    {{include("book.twig", {book: book})}}
+    {% endfor %}
+    </div>
+</div>

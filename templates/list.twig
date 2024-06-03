@@ -1,0 +1,13 @@
+<div class="row gap-2">
+    {% for el in list %}
+    <div class="col d-flex align-items-center gap-4 bg-standart text-light px-4 py-3 rounded" style="width: max-content !important;">
+        <div class="img" style="min-width: 100px; min-height: 100px; max-width: 100px; max-height: 100px">
+            {{el.rawSvg|raw}}
+        </div>
+        <div class="text d-flex flex-column">
+            <h3 class="text-secondary-standart fw-bold">{{el.title}}</h3>
+            <p class="text-secondary fs-5 lh-sm">{{el.des}}</p>
+        </div>
+        </div>
+    {% endfor %}
+</div>

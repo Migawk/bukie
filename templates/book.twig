@@ -1,0 +1,27 @@
+{#
+    book
+    {
+        id           Int|Id
+        name         String
+        description  String
+        image        String|Path
+        author       Int|Id
+        pagesAmount  Int
+        link         String|Path
+        isCost       Boolean
+        isReading    Boolean
+    }
+#}
+{# {{ addToLib('Hello', 'World') }} #}
+
+<div class="d-flex flex-column gap-1 align-items-center color-standard" id="book{{book.id}}">
+    <img src="{{book.image}}" alt="{{book.name}}" width="128" height="200" class="object-fit-cover rounded"/>
+    <p class="fs-5 m-0">{{book.name}}</p>
+    {% if book.isCost and not book.isReading %}
+    <button class="btn btn-primary w-100">Get acquaint</button>
+    {% elseif book.isReading %}
+    <button class="btn btn-warning w-100" onclick="addToLib({{book.id}})">Reading</button>
+    {% else %}
+    <button class="btn btn-success w-100" onclick="addToLib({{book.id}})">Read</button>
+    {% endif %} 
+</div>
