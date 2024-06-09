@@ -11856,6 +11856,14 @@ textarea.form-control-lg {
   color: #dee2e6;
 }
 
+.fill-standard > path {
+  fill: #161719;
+}
+
+.border-standard {
+  border-color: #161719 !important;
+}
+
 .bg-standart {
   background-color: #161719;
   color: #dee2e6;
@@ -12003,6 +12011,38 @@ textarea.form-control-lg {
   display: block !important;
   opacity: 1;
   transform: translate(0, -2px);
+}
+
+.avatar {
+  box-shadow: 4px 2px 4px rgba(22, 23, 25, 0.2666666667);
+  width: 100px !important;
+  height: 100px !important;
+}
+
+.customTable {
+  border-radius: 8px !important;
+  overflow: hidden;
+  width: fit-content;
+}
+.customTableHeading {
+  background: #0d6efd !important;
+  color: #fff;
+}
+.customTableHeading > * {
+  display: flex !important;
+}
+.customTableHeading > * > * {
+  border-right: 1px solid #dee2e6 !important;
+  padding: 6px 4px;
+}
+.customTableHeading > * > *:last-child {
+  border: none;
+}
+.customTableBody > * > * {
+  border-radius: 32px !important;
+}
+.customTableBody > * > * > td {
+  border: 2px solid #161719;
 }
 
 /*# sourceMappingURL=custom.css.map */

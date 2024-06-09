@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 25, 2024 at 05:07 PM
+-- Generation Time: Jun 08, 2024 at 11:58 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -33,7 +33,21 @@ CREATE TABLE `book` (
   `description` varchar(2048) NOT NULL,
   `image` tinytext NOT NULL,
   `author` int(11) NOT NULL,
-  `pages_amount` smallint(6) NOT NULL DEFAULT 0
+  `pages_amount` smallint(6) NOT NULL DEFAULT 0,
+  `structure` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`structure`)),
+  `category` smallint(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category`
+--
+
+CREATE TABLE `category` (
+  `id` smallint(6) NOT NULL,
+  `name` varchar(32) NOT NULL,
+  `parent_category` smallint(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -59,7 +73,7 @@ CREATE TABLE `rack` (
   `book_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `pages` smallint(6) NOT NULL DEFAULT 0,
-  `progress` tinyint(3) NOT NULL DEFAULT 0
+  `progress` float NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -87,6 +101,12 @@ CREATE TABLE `user` (
 ALTER TABLE `book`
   ADD PRIMARY KEY (`id`),
   ADD KEY `author` (`author`);
+
+--
+-- Indexes for table `category`
+--
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `page`
@@ -117,6 +137,12 @@ ALTER TABLE `user`
 --
 ALTER TABLE `book`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `category`
+--
+ALTER TABLE `category`
+  MODIFY `id` smallint(6) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `page`

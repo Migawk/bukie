@@ -16,6 +16,10 @@ $transparent: #00000000
 .text-lighted
 	color: $gray-300
 
+.fill-standard > path
+	fill: $standard
+.border-standard
+	border-color: $standard !important
 .bg-standart
 	background-color: $standard
 	color: $gray-300
@@ -122,3 +126,28 @@ $transparent: #00000000
 	display: block !important
 	opacity: 1
 	transform: translate(0, -2px)
+
+.avatar
+	box-shadow: 4px 2px 4px #16171944
+	width: 100px !important
+	height: 100px !important
+
+.customTable
+	border-radius: 8px !important
+	overflow: hidden
+	width: fit-content
+	&Heading
+		background: $primary !important
+		color: $white
+		&>*
+			display: flex !important
+			&>*
+				border-right: 1px solid $gray-300 !important
+				padding: 6px 4px
+				&:last-child
+					border: none
+
+	&Body>*>*
+		border-radius: 32px !important
+		&>td
+			border: 2px solid $standard

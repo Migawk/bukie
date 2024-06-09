@@ -14,7 +14,21 @@ $libsAction = new Libs();
 $popularBooks = $booksAction->getAllBooks();
 $lib = $libsAction->getLib($_SESSION["user"]["id"]);
 
-foreach ($popularBooks as $key=>$book) {
+$emptyBooks = [
+    [
+        "id" => "",
+        "name" => "",
+        "description" => "",
+        "image" => "",
+        "author" => "",
+        "pagesAmount" => "",
+        "link" => "",
+        "isCost" => "",
+        "isReading" => ""
+    ]
+];
+
+foreach ($popularBooks as $key => $book) {
     foreach ($lib as $libBook) {
         if ($book["id"] === $libBook["bookId"]) {
             $popularBooks[$key]["isReading"] = true;
@@ -24,7 +38,7 @@ foreach ($popularBooks as $key=>$book) {
 
 if (isset($_GET["q"])) {
     $books = $booksAction->searchBook($_GET["q"]);
-    foreach ($books as $key=>$book) {
+    foreach ($books as $key => $book) {
         foreach ($lib as $libBook) {
             if ($book["id"] === $libBook["bookId"]) {
                 $books[$key]["isReading"] = true;
@@ -43,19 +57,19 @@ function fill($field)
 
 <body>
     <?php echo $twig->render("header.twig", ["user" => $_SESSION["user"], "location" => $_SERVER["PHP_SELF"]]); ?>
-    <article class="ps-5 pt-2 d-flex flex-column gap-3">
-        <section>
+    <main class="d-flex gap-2 ps-5 pt-2 w-100 overflow-hidden">
+        <aside>
             <form class="d-flex flex-column gap-2 bg-lighted rounded p-3" action="<?php $_SERVER["PHP_SELF"] ?>" method="get" style="width: fit-content;">
                 <h2>Search the book</h2>
                 <div class="d-flex input-group">
-                    <input class="form-control form-outline border border-dark color-dark" type="text" name="q" placeholder="Name of the book" value="<?php fill("q") ?>">
+                    <input class="form-control form-outline border border-dark color-dark bg-transparent" type="text" name="q" placeholder="Name of the book" value="<?php fill("q") ?>">
                     <input class="btn btn-primary" type="submit" value="Search">
                 </div>
                 <div>
                     <h5>Filters:</h5>
                     <div class="d-flex gap-1">
                         <input hidden type="checkbox" id="fanfics" name="fanfics">
-                        <button id="fanBtn" type="button" onclick="toggle(fans)" style="border-width: 4px" class="btn btn-warning">Fan fics</button>
+                        <button id="fanBtn" type="button" onclick="toggle(fans)" style="border-width: 4px" class="btn btn-warning">Fan&nbsp;fics</button>
                         <input hidden type="checkbox" id="originals" name="originals">
                         <button id="orBtn" type="button" onclick="toggle(orig)" style="border-width: 4px" class="btn btn-warning">Originals</button>
                         <input hidden type="checkbox" id="charts" name="charts">
@@ -87,23 +101,26 @@ function fill($field)
                     </script>
                 </div>
             </form>
-        </section>
-        <section>
-            <?php
-            if (!isset($_GET["q"])) {
-
-                echo "<h3>Result:</h1> <p>Waiting for request...</h3>";
-            } else {
+        </aside>
+        <article class="d-flex flex-column gap-3 w-100">
+            <section>
+                <?php
                 echo "<h3>Result:</h3>";
-                echo $twig->render("carousel.twig", ['books' => $books]);
-            }
-            ?>
-        </section>
-        <section>
-            <h3>Popular:</h3>
-            <?php echo $twig->render("carousel.twig", ['books' => $popularBooks]); ?>
-        </section>
-    </article>
+                if (!isset($_GET["q"])) {
+                    echo "<p>Write anything to display more useful information.</p>";
+                    echo $twig->render("carousel.twig", ["books" => $emptyBooks]);
+                } else {
+                    echo "<p>". sizeof($books) ." books are found.</p>";
+                    echo $twig->render("carousel.twig", ['books' => $books]);
+                }
+                ?>
+            </section>
+            <section>
+                <h3>Popular:</h3>
+                <?php echo $twig->render("carousel.twig", ['books' => $popularBooks]); ?>
+            </section>
+        </article>
+    </main>
     <?php echo $twig->render('footer.twig'); ?>
 </body>
 

@@ -17,7 +17,7 @@ class Users extends DB {
     }
     function getUser($name)
     {
-        $user =  $this->query("SELECT id, name FROM user WHERE name LIKE \"%" . $name . "%\"");
+        $user =  $this->query("SELECT id, name, description, role FROM user WHERE name LIKE \"%" . $name . "%\"");
         unset($user["password"]);
         return $user;
     }
@@ -33,5 +33,8 @@ class Users extends DB {
         } else {
             throw new Exception("password_incorrect");
         }
+    }
+    function getUsersBooks($id) {
+        return $this->query("SELECT * FROM book WHERE author=" . $id);
     }
 }

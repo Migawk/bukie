@@ -14,7 +14,7 @@ book
     .userId
     .userName
 #}
-{% set href = "book.php?id=" ~ book.id ~ "&page=" ~ currentPage %}
+{% set href = "book?id=" ~ book.id ~ "&page=" ~ currentPage %}
 {% if mode is not defined %}
 	{% set mode = "reader" %}
 {% endif %}
