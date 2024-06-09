@@ -1,5 +1,5 @@
 async function deletePage(number, book_id) {
-  let res = await fetch("/bukie/api/page.php", {
+  let res = await fetch("/api/page.php", {
     method: "DELETE",
     body: JSON.stringify({
       number,
@@ -46,7 +46,7 @@ async function addPage(book_id, number) {
     number = list.children.length - 1;
   }
 
-  let res = await fetch("/bukie/api/page.php", {
+  let res = await fetch("/api/page.php", {
     method: "POST",
     body: JSON.stringify({
       number,

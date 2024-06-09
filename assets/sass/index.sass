@@ -21,6 +21,10 @@ $transparent: #00000000
 	color: $gray-300
 .color-standard
 	color: $standard
+.link-standard
+	color: $standard
+	&:hover
+		color: $gray-800
 
 .bg-purple
 	background-color: $purple !important
@@ -38,14 +42,23 @@ $transparent: #00000000
 .border-empty // header
 	border-bottom: 3px solid $standard !important
 
-.text-gray-900
-	color: $gray-900 !important
-.border-gray-900
-	border-color: $gray-900 !important
+.text-gray-800
+	color: $gray-800 !important
+.bg-gray-800
+	background-color: $gray-800 !important
+.border-gray-800
+	border-color: $gray-800 !important
 
-.placeholder-gray-900::placeholder
-	color: $gray-900
+.placeholder-gray-800::placeholder
+	color: $gray-800
 
+.fill-gray-800 > path
+	fill: $gray-800
+
+.link-gray-800
+	color: $gray-800
+	&:hover
+		color: $dark
 .w-min
 	width: min-content !important
 .w-fit
@@ -104,7 +117,7 @@ $transparent: #00000000
 	z-index: 10
 	display: none !important
 
-.searchField:hover ~ .field, .field:hover
+.searchField:hover ~ .field, .searchField:focus ~ .field, .field:hover
 	transition: .25s
 	display: block !important
 	opacity: 1

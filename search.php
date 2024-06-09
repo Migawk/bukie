@@ -24,6 +24,13 @@ foreach ($popularBooks as $key=>$book) {
 
 if (isset($_GET["q"])) {
     $books = $booksAction->searchBook($_GET["q"]);
+    foreach ($books as $key=>$book) {
+        foreach ($lib as $libBook) {
+            if ($book["id"] === $libBook["bookId"]) {
+                $books[$key]["isReading"] = true;
+            }
+        }
+    };
 }
 
 function fill($field)
@@ -38,9 +45,10 @@ function fill($field)
     <?php echo $twig->render("header.twig", ["user" => $_SESSION["user"], "location" => $_SERVER["PHP_SELF"]]); ?>
     <article class="ps-5 pt-2 d-flex flex-column gap-3">
         <section>
-            <form class="d-flex flex-column gap-1" action="<?php $_SERVER["PHP_SELF"] ?>" method="get" style="width: fit-content;">
+            <form class="d-flex flex-column gap-2 bg-lighted rounded p-3" action="<?php $_SERVER["PHP_SELF"] ?>" method="get" style="width: fit-content;">
+                <h2>Search the book</h2>
                 <div class="d-flex input-group">
-                    <input class="form-control form-outline" type="text" name="q" placeholder="Name of the book" value="<?php fill("q") ?>">
+                    <input class="form-control form-outline border border-dark color-dark" type="text" name="q" placeholder="Name of the book" value="<?php fill("q") ?>">
                     <input class="btn btn-primary" type="submit" value="Search">
                 </div>
                 <div>

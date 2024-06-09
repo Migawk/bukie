@@ -7,20 +7,46 @@
 	$db = new DB();
 	$pagesAction = new Pages();
 	$booksAction = new Books();
+	$libsAction = new Libs();
+
 
 	$bookInfo;
 	parse_str($_SERVER["QUERY_STRING"], $bookInfo);
 
 	$book = $booksAction->getBook($bookInfo["id"]);
-	try {
-		$pages = $pagesAction->getPages($bookInfo["id"], $_GET["page"]);
-	} catch (Exception $e) {
-		print_r($e);
+
+
+	if (isset($_GET["page"])) {
+		$pageNum = $_GET["page"];
+	} else {
+		$books = $libsAction->getLib($_SESSION["user"]["id"]);
+		$index = array_search($_GET["id"], array_column($books, "bookId"));
+
+		["progress" => $progress, "bookPages" => $pagesIsRead] = $books[$index];
+
+		$pageNum = $progress * $pagesIsRead;
 	}
+	$pages = $pagesAction->getPages($bookInfo["id"], $pageNum);
 
 	?>
 	<title>Bukie | <?php echo $book["name"] ?></title>
 </head>
+
+<script>
+	async function setProgress(bookId, progress) {
+		fetch("/api/lib.php/status/", {
+			"method": "PUT",
+			body: JSON.stringify({
+				bookId,
+				progress
+			}),
+			headers: {
+				"Content-Type": "application/json"
+			}
+		}).then(res => res.text()).then(console.log);
+	}
+</script>
+
 <body>
 	<?php echo $twig->render("header.twig", ["user" => $_SESSION["user"], "location" => $_SERVER["PHP_SELF"]]); ?>
 	<main class="d-flex px-5 py-3 gap-3">
@@ -32,7 +58,7 @@
 						<button onclick="decr()" type="button" class="btn rounded-start btn-dark">
 							&lt;
 						</button>
-						<input type="text" class="counter" style="width: 100%" value="<?= $_GET["page"] ?>" id="pageNum">
+						<input pattern="[0-9]" type="text" class="counter" style="width: 100%" value="<?= $pageNum ?>" id="pageNum">
 						<button onclick="incr()" type="button" class="btn rounded-end text-lighted btn-dark">&gt;</button>
 					</div>
 				</form>
@@ -46,7 +72,10 @@
 					let dirty = false;
 					let ind = null;
 
+					if (isNaN(page.value)) page.value = "0";
+
 					function countDownChange() {
+						if (isNaN(page.value)) return page.value = "0";
 						if (dirty) {
 							dirty = false;
 
@@ -56,6 +85,7 @@
 							return;
 						};
 						dirty = true;
+						
 						ind = setTimeout(() => {
 							const newUrl = new URL(window.location.href);
 							const params = new URLSearchParams({
@@ -63,6 +93,9 @@
 								page: page.value
 							});
 							newUrl.search = params.toString();
+
+							setProgress(newUrl.searchParams.get("id"), page.value / pagesLen);
+
 							window.location.href = newUrl;
 							dirty = false;
 						}, 2000);
@@ -77,7 +110,7 @@
 						countDownChange();
 					};
 					const incr = () => {
-						if (page.value > pagesLen -1) return;
+						if (page.value > pagesLen - 1) return;
 						page.value++;
 						countDownChange();
 					};
@@ -87,16 +120,26 @@
 				<h3 class="fw-bold">Navigation</h3>
 				<div>
 					<?php
-					$structure = json_decode($book["structure"], true);
-					foreach ($structure as $point) {
-						$url = $_SERVER["PHP_SELF"] . "?id=" . $_GET["id"] . "&page=" . $point["page"]; // new url
+					if (isset($book["structure"])) {
+						$structure = json_decode($book["structure"], true);
+						foreach ($structure as $point) {
+							$url = $_SERVER["PHP_SELF"] . "?id=" . $_GET["id"] . "&page=" . $point["page"]; // new url
 					?>
-						<a href="<?= $url ?>" class="d-flex justify-content-between text-decoration-none color-standart">
-							<p><?= $point["name"] ?></p>
-							<p><?= $point["page"] ?></p>
-						</a>
+							<a href="<?= $url ?>" class="d-flex justify-content-between text-decoration-none
+							<?php if ($pageNum === $point["page"]) {
+								echo 'color-warning';
+							} else {
+								echo 'color-standard';
+							} ?>
+							">
+								<p><?= $point["name"] ?></p>
+								<p><?= $point["page"] ?></p>
+							</a>
 
 					<?php
+						}
+					} else {
+						echo "<p>Unmarked :(</p>";
 					}
 					?>
 				</div>
@@ -143,20 +186,28 @@
 		</aside>
 		<article class="w-100 d-flex flex-column gap-3">
 			<?php
-			foreach ($pages as $page) { ?>
+			if (sizeof($pages) > 0) {
+				foreach ($pages as $page) { ?>
+					<div class="p-3 color-standard bg-lighted rounded d-flex flex-column justify-content-between" style="min-height: 384px">
+						<div class="content"><?php print_r($page["content"]); ?></div>
+						<p class="number text-end fw-bold">
+							<?php
+							if ($page["number"] != 0) {
+								echo $page["number"];
+							} else {
+								echo "Title page";
+							}
+							?>
+						</p>
+					</div>
+				<?php }
+			} else { ?>
 				<div class="p-3 color-standard bg-lighted rounded d-flex flex-column justify-content-between" style="min-height: 384px">
-					<div class="content"><?php print_r($page["content"]); ?></div>
-					<p class="number text-end fw-bold">
-						<?php
-						if ($page["number"] != 0) {
-							echo $page["number"];
-						} else {
-							echo "Title page";
-						}
-						?>
-					</p>
+					<h2>An empty page.</h2>
 				</div>
-			<?php } ?>
+			<?php
+			}
+			?>
 		</article>
 	</main>
 	<?php echo $twig->render("footer.twig"); ?>

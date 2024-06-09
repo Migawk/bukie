@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 
 class Libs extends DB
 {
@@ -27,5 +30,13 @@ class Libs extends DB
     function deleteLib($userId, $bookId)
     {
         return $this->query('DELETE FROM rack WHERE book_id=' . $bookId . ' AND user_id=' . $userId);
+    }
+    function setRead($userId, $bookId, $progress)
+    {
+        try {
+            return $this->query('UPDATE rack SET progress=' . $progress . ' WHERE book_id=' . $bookId . ' AND user_id=' . $userId);
+        } catch (Exception $e) {
+            dd($e);
+        }
     }
 }

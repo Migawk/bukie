@@ -2,6 +2,7 @@
 include "dotenv.php";
 
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class Actions
 {
@@ -16,7 +17,7 @@ class Actions
     function verifyToken($token)
     {
         try {
-            return JWT::decode($token, $_ENV["JWT_TOKEN"]);
+            return JWT::decode($token, new Key($_ENV["JWT_TOKEN"], "HS256"));
         } catch (Exception $e) {
             return $e;
         }

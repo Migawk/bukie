@@ -11,11 +11,14 @@ include __DIR__ . "/../helpers/db/pages.php";
 include __DIR__ . "/../helpers/db/books.php";
 include __DIR__ . "/../helpers/db/users.php";
 include __DIR__ . "/../helpers/db/libs.php";
+include __DIR__ . "/../helpers/text.php";
 include __DIR__ . "/../twig/extension.php";
 
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
+
+$actions = new Actions();
 
 // class CustomTwigExtension extends AbstractExtension
 // {
@@ -44,7 +47,6 @@ if (isset($_SESSION["user"])) {
 
 if (!isset($_SESSION["user"])) {
     if (isset($_COOKIE["token"])) {
-        $actions = new Actions();
         $token = $actions->verifyToken($_COOKIE["token"]);
         
         if($token instanceof Exception) {

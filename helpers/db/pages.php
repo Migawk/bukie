@@ -2,7 +2,7 @@
 class Pages extends DB
 {
 
-    function getPages($bookId, $offset)
+    function getPages($bookId, $offset=0)
     {
         return $this->query("SELECT * FROM page WHERE book_id=" . $bookId . " LIMIT 5 OFFSET " . $offset);
     }

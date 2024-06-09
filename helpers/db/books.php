@@ -10,7 +10,27 @@ class Books extends DB
     }
     function searchBook($name)
     {
-        $res = $this->query("SELECT * FROM book WHERE name LIKE \"%" . $name . "%\" LIMIT 5;");
+        try {
+        $res = $this->query("
+        SELECT
+            book.id,
+            book.name,
+            book.description,
+            book.image,
+            book.author,
+            book.pages_amount,
+            book.structure,
+            user.name as authorName,
+            user.id as authorId
+        FROM book
+        INNER JOIN user
+        ON book.author=user.id
+        WHERE book.name
+        LIKE \"%" . $name . "%\"
+        LIMIT 5
+        ;");} catch ( Exception $e) {
+            print_r($e->getMessage());
+        }
         return $res;
     }
     function getBook($id)

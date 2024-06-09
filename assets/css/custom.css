@@ -11865,6 +11865,13 @@ textarea.form-control-lg {
   color: #161719;
 }
 
+.link-standard {
+  color: #161719;
+}
+.link-standard:hover {
+  color: #343a40;
+}
+
 .bg-purple {
   background-color: #290661 !important;
 }
@@ -11889,15 +11896,30 @@ textarea.form-control-lg {
   border-bottom: 3px solid #161719 !important;
 }
 
-.text-gray-900 {
-  color: #212529 !important;
+.text-gray-800 {
+  color: #343a40 !important;
 }
 
-.border-gray-900 {
-  border-color: #212529 !important;
+.bg-gray-800 {
+  background-color: #343a40 !important;
 }
 
-.placeholder-gray-900::placeholder {
+.border-gray-800 {
+  border-color: #343a40 !important;
+}
+
+.placeholder-gray-800::placeholder {
+  color: #343a40;
+}
+
+.fill-gray-800 > path {
+  fill: #343a40;
+}
+
+.link-gray-800 {
+  color: #343a40;
+}
+.link-gray-800:hover {
   color: #212529;
 }
 
@@ -11976,7 +11998,7 @@ textarea.form-control-lg {
   display: none !important;
 }
 
-.searchField:hover ~ .field, .field:hover {
+.searchField:hover ~ .field, .searchField:focus ~ .field, .field:hover {
   transition: 0.25s;
   display: block !important;
   opacity: 1;

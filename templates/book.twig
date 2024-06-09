@@ -20,7 +20,7 @@
     {% if book.isCost and not book.isReading %}
     <button class="btn btn-primary w-100">Get acquaint</button>
     {% elseif book.isReading %}
-    <button class="btn btn-warning w-100" onclick="addToLib({{book.id}})">Reading</button>
+    <a class="btn btn-warning w-100" href="/book.php?id={{book.id}}">Reading</a>
     {% else %}
     <button class="btn btn-success w-100" onclick="addToLib({{book.id}})">Read</button>
     {% endif %} 
